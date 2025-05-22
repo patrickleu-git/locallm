@@ -4,11 +4,10 @@ from langchain.schema.document import Document
 from langchain_chroma import Chroma
 from get_embedding import get_embedding
 
-DATA_PATH = "./data/pdfs/eu-omnibus"
-CHROMA_PATH = "./chroma_langchain_db/eu-omnibus"
+DATA_PATH = "data/pdfs/eu-omnibus"
+CHROMA_PATH = "chroma_langchain_db/eu-omnibus"
 
 EMBEDDING = "snowflake-arctic-embed2"
-
 
 # populate data base
 def main():
@@ -62,10 +61,11 @@ def add_to_chroma(chunks: list[Document]):
         if chunk.metadata["id"] not in existing_ids:
             new_chunks.append(chunk)
 
-    if len(new_chunks):
+    if new_chunks:
         print(f"Adding new documents: {len(new_chunks)}")
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
         db.add_documents(new_chunks, ids=new_chunk_ids)
+        db.persist() 
     
     else:
         print("No new documents to add")
