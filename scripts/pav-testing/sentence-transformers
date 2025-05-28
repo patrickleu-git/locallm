@@ -1,0 +1,10 @@
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("nomic-ai/nomic-embed-text-v2-moe", trust_remote_code=True)
+sentences = ["Hello!", "Hallo!", "Salut!", "Ciao!", "Bonjour!", "Buongiorno!"]
+embeddings = model.encode(sentences, prompt="passage")
+
+print(embeddings.shape)
+
+similarity = model.similarity(embeddings[0], embeddings[4])
+print(similarity)
