@@ -1,5 +1,6 @@
 # trying different pdf loaders and their quality / flexibility / aptness for the PAV documents
-
+import pprint
+from langchain_pymupdf4llm import PyMuPDF4LLMLoader
 from langchain_community.document_loaders.blob_loaders import FileSystemBlobLoader # load multiples
 from langchain_community.document_loaders.generic import GenericLoader # generic loader
 from langchain_pymupdf4llm import PyMuPDF4LLMParser
@@ -14,25 +15,42 @@ CHROMA_PATH = "chroma_langchain_db/pav"
 
 EMBEDDING = "snowflake-arctic-embed2"
 
-loader = GenericLoader(
-    blob_loader=FileSystemBlobLoader(
-        path=DATA_PATH, 
-        glob="*.pdf"
-    ), 
-    blob_parser=PyMuPDF4LLMParser(
-        mode="single",
-        extract_images=True,
-        images_parser=LLMImageBlobParser(
-            model = ChatOllama(
-                model="gemma3:4b",
-                temperature=1, 
-                num_predict=1024
-            )
-        ),
+loader = PyMuPDF4LLMLoader(
+    file_path=DATA_PATH + "/extract.pdf",
+    mode="single",
+    extract_images=True,
+    images_parser=LLMImageBlobParser(
+        model=ChatOllama(
+            model="gemma3:4b",
+            temperature=1,
+            num_predict=1024
+        )
     )
 )
 
-
 docs = loader.load()
-print(docs[0].metadata)
+pprint.pp(docs[0].metadata)
 print(len(docs))
+
+
+### generic directory loader with PyMuPDF4LLM parser
+
+# loader = GenericLoader(
+#     blob_loader=FileSystemBlobLoader(
+#         path=DATA_PATH, 
+#         glob="*.pdf"
+#     ), 
+#     blob_parser=PyMuPDF4LLMParser(
+#         mode="single",
+#         extract_images=True,
+#         images_parser=LLMImageBlobParser(
+#             model = ChatOllama(
+#                 model="gemma3:4b",
+#                 temperature=1, 
+#                 num_predict=1024
+#             )
+#         ),
+#     )
+# )
+
+
