@@ -4,21 +4,29 @@ from langchain.schema.document import Document
 from langchain_chroma import Chroma
 from get_embedding import get_embedding
 
-DATA_PATH = "data/pdfs/pav"
+DATA_PATH = "data/pdfs/pav/"
+
+PDFs = [
+    {"title": "AP5-winterthur-bericht.pdf",
+     "title": "AP5-winterthur-massnahmenband.pdf"},
+]
+
 CHROMA_PATH = "chroma_langchain_db/pav"
 
-EMBEDDING = "jinaai/jina-embeddings-v3"
+EMBEDDING = "Qwen/Qwen3-Embedding-0.6B"
 
 # populate data base
 def main():
-    documents = load_documents()
-    chunks = split_documents(documents)
-    add_to_chroma(chunks)
+    for pdf in PDFs:
+        documents = load_documents(pdf)
+        chunks = split_documents(documents)
+        add_to_chroma(chunks)
 
 
 # function to load pdf documents from DATA_PATH
-def load_documents():
-    document_loader = PyPDFLoader(DATA_PATH + "/AP5-winterthur-bericht.pdf")
+def load_documents(pdf):
+    document_loader = PyPDFLoader(DATA_PATH + f"{pdf["title"]}") 
+    
     return document_loader.load()
 
 
@@ -40,7 +48,7 @@ def add_to_chroma(chunks: list[Document]):
     
     # load an existing data base
     db = Chroma(
-        collection_name = "omnibus",
+        collection_name = "pav",
         embedding_function = get_embedding(provider="HF", embedding_model = EMBEDDING),
         persist_directory = CHROMA_PATH,
     )

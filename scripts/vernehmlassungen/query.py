@@ -34,7 +34,7 @@ def query_rag(query: str):
     db = Chroma(collection_name = "omnibus", persist_directory=CHROMA_PATH, embedding_function = embedding_function)
     
     # search the data base
-    results = db.similarity_search_with_score(query, k = 10)
+    results = db.similarity_search_with_score(query, k = 5)
     
     # confirm that context is not empty
     if not results:

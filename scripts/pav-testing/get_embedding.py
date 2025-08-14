@@ -2,7 +2,7 @@ from typing import Literal
 from langchain_ollama import OllamaEmbeddings
 from langchain_huggingface import HuggingFaceEmbeddings
 
-def get_embedding(provider: Literal["Ollama", "HF"], embedding_model: str = "snowflake-arctic-embed2", show_progress: bool = True):
+def get_embedding(provider: Literal["Ollama", "HF"], embedding_model: str, show_progress: bool = True):
     """
     Function to get an embedding function.
     Useful because embedding is needed two times: (1) creating the data base and (2) embed query.
