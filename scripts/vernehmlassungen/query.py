@@ -10,8 +10,9 @@ from get_embedding import get_embedding
 
 CHROMA_PATH = "chroma_langchain_db/vernehmlassungen"
 
+PROVIDER = "HF"
 EMBEDDING = "jinaai/jina-embeddings-v3"
-LLM = "mistral"
+LLM = "qwen3:8b"
 
 PROMPT_TEMPLATE = """
 Du bist ein Experte im schweizerischen öffentlichen Recht. Du hast weitreichende Kenntisse der Gegebenheiten, der Prozesse und der Anspruchsgruppen im Gesetzgebungs- und Anpassungsprozess. 

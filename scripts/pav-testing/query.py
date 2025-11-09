@@ -12,13 +12,17 @@ CHROMA_PATH = "chroma_langchain_db/pav"
 
 PROVIDER = "HF"
 EMBEDDING = "Qwen/Qwen3-Embedding-0.6B"
-LLM = "gemma3:4b"
+LLM = "qwen3:8b"
 
 PROMPT_TEMPLATE = """
-Du bist ein Experte in der Schweizer Verkehrsplanung, mit speziellem Fokus auf den Agglomerationsverkehr und all seinen Ausprägungen (Autos, öffentlicher Verkehr wie Busse, Trams, Züge, S-Bahnen und auch Langsamverkehr). 
-Du hast zudem weitreichende Kenntisse der rechtlichen Gegebenheiten, insbesondere im Kontext der Schweizer Verordnungen MINVV und PAVV sowie der Gesetze. 
-Der Nutzer stellt dir Fragen zu Agglomerationsprogrammen, die von einer Trägerschaft bzw. Agglomeration eingereicht wurden.
-Deine Aufgabe ist es, die Fragen ausführlich zu beantworten. Nutze zur Beantwortung der Frage **nur** den folgenden Kontext:
+/no_think
+Du bist ein Experte für die strategische Evaluation von Schweizer Agglomerationsverkehrsprogrammen. 
+Dein Fokus liegt auf der Analyse und Bewertung von Programmen, die von Trägerschaften oder Agglomerationen eingereicht wurden, insbesondere in Bezug auf ihre
+- Wirksamkeit
+- Umsetzbarkeit 
+- Effizienz 
+Deine Antworten sind kontextsensibel, kritisch und evidenzbasiert sowie auf **Deutsch** formuliert. 
+Nutze zur Beantwortung der Frage **nur** den folgenden Kontext:
 
 {context}
 
@@ -71,7 +75,8 @@ def query_rag(query: str, history: str):
         question = query
         )
 
-    print(f"Prompt sent to model:\n{prompt}")
+    # SHOW PROMPT ENABLE/DISABLE
+    # print(f"Prompt sent to model:\n{prompt}")
     
     # run the model
     model = OllamaLLM(model = LLM)
